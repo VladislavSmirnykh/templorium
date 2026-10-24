@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="res_config_settings_view_form_sfu_client_source" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.sfu.client.source</field>
+            <field name="model">res.config.settings</field>
+            <field name="arch" type="xml">
+                <form string="SFU Client Bundle">
+                    <field
+                        name="sfu_client_source"
+                        widget="code"
+                        options="{'mode': 'javascript'}"
+                        nolabel="1"
+                        required="1"
+                    />
+                    <footer>
+                        <button
+                            name="action_save_sfu_client_asset"
+                            type="object"
+                            string="Save"
+                            class="btn-primary"
+                        />
+                        <button string="Discard" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.mail</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <div id="emails" position='replace'>
+                    <block title="Emails" id="emails">
+                        <setting id="email_servers_setting" help="Configure your own email servers">
+                            <field name="external_email_server_default"/>
+                            <div class="content-group mb-3" invisible="not external_email_server_default">
+                                <div>
+                                    <div class="mt8">
+                                        <button type="action"
+                                        name="%(action_email_server_tree)d"
+                                        string="Incoming Email Servers" icon="east" class="btn-link"/>
+                                    </div>
+                                    <div class="mt8">
+                                        <button type="action"
+                                        name="%(base.action_ir_mail_server_list)d"
+                                        string="Outgoing Email Servers" icon="east" class="btn-link"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                        <setting id="email-alias-setting" string="Alias Domain"
+                                 help="Use different domains for your mail aliases"
+                                 company_dependent="1">
+                            <span class="me-1">@</span>
+                            <field name="alias_domain_id" placeholder="e.g. mycompany.com"
+                                   options="{'no_create_edit': True}"/>
+                        </setting>
+                        <setting id="restrict_template_rendering_setting" help="Restrict mail templates edition and QWEB placeholders usage.">
+                            <field name="restrict_template_rendering"/>
+                        </setting>
+                    </block>
+                    <div id="discuss_setting">
+                        <block title="Discuss" id="discuss">
+                            <setting id="activities_setting" string="Activities" help="Set up activity types and activity plans">
+                                <div class="content-group">
+                                    <div class="mt8">
+                                        <button name="%(mail.mail_activity_type_action)d" string="Activity Types" type="action" class="oe_link" icon="east"/>
+                                    </div>
+                                    <div class="mt8">
+                                        <button name="%(mail.mail_activity_plan_action)d" string="Activity Plans" type="action" class="oe_link" icon="east"/>
+                                    </div>
+                                    <div class="mt8">
+                                        <button name="%(mail.res_role_action)d" string="Roles" type="action" class="btn-link" icon="east"/>
+                                    </div>
+                                </div>
+                            </setting>
+                        </block>
+                    </div>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

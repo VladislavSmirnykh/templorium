@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_templorium_demo_showcase_search" model="ir.ui.view">
+        <field name="name">templorium.demo.showcase.search</field>
+        <field name="model">templorium.demo.showcase</field>
+        <field name="arch" type="xml">
+            <search string="Demo showcase">
+                <field name="name"/>
+                <field name="rel_partner_id"/>
+                <field name="scalar_selection"/>
+                <filter string="Active" name="filter_active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="filter_inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Draft stage" name="filter_kanban_new" domain="[('kanban_stage', '=', 'new')]"/>
+                <group>
+                    <filter string="Kanban stage" name="group_kanban_stage" context="{'group_by': 'kanban_stage'}"/>
+                    <filter string="Selection" name="group_scalar_selection" context="{'group_by': 'scalar_selection'}"/>
+                    <filter string="Partner" name="group_partner" context="{'group_by': 'rel_partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_templorium_demo_showcase_list" model="ir.ui.view">
+        <field name="name">templorium.demo.showcase.list</field>
+        <field name="model">templorium.demo.showcase</field>
+        <field name="arch" type="xml">
+            <list string="Demo showcase" duplicate="1">
+                <field name="name"/>
+                <field name="kanban_stage" widget="badge"/>
+                <field name="scalar_selection"/>
+                <field name="scalar_boolean_required"/>
+                <field name="compute_sum_stored"/>
+                <field name="rel_partner_id"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_templorium_demo_showcase_kanban" model="ir.ui.view">
+        <field name="name">templorium.demo.showcase.kanban</field>
+        <field name="model">templorium.demo.showcase</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="kanban_stage" duplicate="1">
+                <field name="name"/>
+                <field name="kanban_stage"/>
+                <field name="compute_label_preview"/>
+                <field name="rel_partner_id"/>
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bold"/>
+                        <div class="text-muted small">
+                            <field name="compute_label_preview"/>
+                        </div>
+                        <div t-if="record.rel_partner_id.raw_value">
+                            <field name="rel_partner_id"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_templorium_demo_showcase_form" model="ir.ui.view">
+        <field name="name">templorium.demo.showcase.form</field>
+        <field name="model">templorium.demo.showcase</field>
+        <field name="arch" type="xml">
+            <form string="Demo showcase" duplicate="1">
+                <header>
+                    <button name="action_kanban_stage_new" type="object" string="New"
+                            invisible="kanban_stage == 'new'"/>
+                    <button name="action_kanban_stage_progress" type="object" string="In progress"
+                            invisible="kanban_stage == 'progress'" class="oe_highlight"/>
+                    <button name="action_kanban_stage_done" type="object" string="Done"
+                            invisible="kanban_stage == 'done'"/>
+                    <button name="action_send_bus_notification" type="object" string="Bus bus"
+                            title="Send simple_notification to the current user via bus.bus"/>
+                    <field name="kanban_stage" widget="statusbar" statusbar_visible="new,progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Required title (Char)"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Meta">
+                            <field name="id" string="Record UUID" readonly="1"/>
+                            <field name="active"/>
+                            <field name="kanban_stage" readonly="1"/>
+                            <field name="scalar_selection"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                        </group>
+                        <group string="Quick compute preview">
+                            <field name="compute_label_preview"/>
+                            <field name="onchange_hint" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Scalars" name="page_scalars">
+                            <group>
+                                <group string="Text">
+                                    <field name="scalar_char_optional"/>
+                                    <field name="notes"/>
+                                    <field name="scalar_html"/>
+                                </group>
+                                <group string="Numbers">
+                                    <field name="scalar_integer"/>
+                                    <field name="scalar_big_integer"
+                                           options="{'enable_formatting': false}"/>
+                                    <field name="scalar_float"
+                                           options="{'enable_formatting': false}"/>
+                                    <field name="scalar_decimal"
+                                           options="{'enable_formatting': false}"/>
+                                    <field name="scalar_monetary"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Boolean">
+                                    <field name="scalar_boolean_required"/>
+                                    <field name="scalar_boolean_nullable"/>
+                                </group>
+                                <group string="Date / time">
+                                    <field name="scalar_date"/>
+                                    <field name="scalar_datetime"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Binary / image">
+                                    <field name="scalar_binary" filename="scalar_binary_filename"/>
+                                    <field name="scalar_binary_filename" invisible="1"/>
+                                    <field name="scalar_image" widget="image" class="oe_avatar"/>
+                                </group>
+                                <group string="Json">
+                                    <field name="scalar_json" widget="json"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Relations" name="page_relations">
+                            <group>
+                                <field name="rel_partner_id"/>
+                                <field name="related_partner_email"/>
+                                <field name="rel_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </group>
+                            <group string="Reference fields">
+                                <field name="ref_model"/>
+                                <field name="ref_id"/>
+                                <field name="ref_classic"/>
+                            </group>
+                        </page>
+                        <page string="One2many lines" name="page_lines">
+                            <field name="rel_line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_price"/>
+                                    <field name="line_total"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Compute" name="page_compute">
+                            <group string="Stored @api.depends → DB column">
+                                <field name="compute_operand_a"/>
+                                <field name="compute_operand_b"/>
+                                <field name="compute_sum_stored" readonly="1"/>
+                            </group>
+                            <group string="Non-stored compute">
+                                <field name="compute_label_preview" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Onchange" name="page_onchange">
+                            <group string="@api.onchange (client only until Save)">
+                                <field name="onchange_quantity"/>
+                                <field name="onchange_unit_price"/>
+                                <field name="onchange_hint" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Properties" name="page_properties">
+                            <group>
+                                <field name="properties_schema_id"/>
+                                <field name="dynamic_properties" columns="2"/>
+                            </group>
+                        </page>
+                        <page string="Constraints" name="page_constraints">
+                            <group string="@api.constrains on name length">
+                                <field name="constraint_min_name_len"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_templorium_demo_showcase" model="ir.actions.act_window">
+        <field name="name">Field showcase</field>
+        <field name="res_model">templorium.demo.showcase</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_templorium_demo_showcase_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a demo record to explore field types, compute, onchange, and views.
+            </p>
+        </field>
+    </record>
+
+    <!-- Tags -->
+    <record id="view_templorium_demo_tag_list" model="ir.ui.view">
+        <field name="name">templorium.demo.tag.list</field>
+        <field name="model">templorium.demo.tag</field>
+        <field name="arch" type="xml">
+            <list string="Demo tags" editable="bottom">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_templorium_demo_tag" model="ir.actions.act_window">
+        <field name="name">Demo tags</field>
+        <field name="res_model">templorium.demo.tag</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Ref targets -->
+    <record id="view_templorium_demo_ref_target_list" model="ir.ui.view">
+        <field name="name">templorium.demo.ref.target.list</field>
+        <field name="model">templorium.demo.ref.target</field>
+        <field name="arch" type="xml">
+            <list string="Reference targets" editable="bottom">
+                <field name="name"/>
+                <field name="note"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_templorium_demo_ref_target" model="ir.actions.act_window">
+        <field name="name">Reference targets</field>
+        <field name="res_model">templorium.demo.ref.target</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Properties schema -->
+    <record id="view_templorium_demo_properties_schema_form" model="ir.ui.view">
+        <field name="name">templorium.demo.properties.schema.form</field>
+        <field name="model">templorium.demo.properties.schema</field>
+        <field name="arch" type="xml">
+            <form string="Properties schema">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="properties_definition" widget="properties_definition"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_templorium_demo_properties_schema_list" model="ir.ui.view">
+        <field name="name">templorium.demo.properties.schema.list</field>
+        <field name="model">templorium.demo.properties.schema</field>
+        <field name="arch" type="xml">
+            <list string="Properties schemas">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_templorium_demo_properties_schema" model="ir.actions.act_window">
+        <field name="name">Properties schemas</field>
+        <field name="res_model">templorium.demo.properties.schema</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

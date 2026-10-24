@@ -1,0 +1,6 @@
+id,name,model_id,group_id/id,operation,domain
+access_templorium_demo_showcase_user,templorium.demo.showcase user,templorium.demo.showcase,base.group_user,crud,
+access_templorium_demo_line_user,templorium.demo.line user,templorium.demo.line,base.group_user,crud,
+access_templorium_demo_tag_user,templorium.demo.tag user,templorium.demo.tag,base.group_user,crud,
+access_templorium_demo_ref_target_user,templorium.demo.ref.target user,templorium.demo.ref.target,base.group_user,crud,
+access_templorium_demo_properties_schema_user,templorium.demo.properties.schema user,templorium.demo.properties.schema,base.group_user,crud,

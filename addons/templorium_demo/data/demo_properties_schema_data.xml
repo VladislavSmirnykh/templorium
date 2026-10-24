@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="demo_properties_schema_default" model="templorium.demo.properties.schema">
+        <field name="name">Default demo properties</field>
+        <field name="properties_definition" eval="[
+            {'name': 'demo_prop_char', 'string': 'Dynamic char', 'type': 'char'},
+            {'name': 'demo_prop_integer', 'string': 'Dynamic integer', 'type': 'integer'},
+            {'name': 'demo_prop_boolean', 'string': 'Dynamic boolean', 'type': 'boolean'},
+            {'name': 'demo_prop_selection', 'string': 'Dynamic selection', 'type': 'selection',
+                'selection': [['a', 'Option A'], ['b', 'Option B']]},
+        ]"/>
+    </record>
+</odoo>

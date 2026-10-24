@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.base.setup</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="0"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <field name="is_root_company" invisible="1"/>
+                    <app data-string="General Settings" string="General Settings" name="general_settings" logo="/base/static/description/settings.png">
+
+                        <div id="invite_users">
+                            <block title="Users" name="users_setting_container">
+                                <setting id="invite_users_setting">
+                                    <widget name='res_config_invite_users'/>
+                                </setting>
+                                <setting id="active_user_setting">
+                                    <field name='active_user_count' class="w-auto ps-3 fw-bold" nolabel="1" aria-label="Number of active users"/>
+                                    <span class='o_form_label' invisible="active_user_count &gt; 1">
+                                        Active User
+                                    </span>
+                                    <span class='o_form_label' invisible="active_user_count &lt;= 1">
+                                        Active Users
+                                    </span>
+                                    <br/>
+                                    <button name="%(base.action_res_users)d" icon="east" type="action" string="Manage Users" class="btn-link o_web_settings_access_rights"/>
+                                </setting>
+                            </block>
+                        </div>
+
+                        <div id="languages">
+                            <block title="Languages" name="languages_setting_container">
+                                <setting id="languages_setting">
+                                    <div class="w-50">
+                                        <field name="language_count" class="w-auto ps-1 fw-bold"/>
+                                        <span class='o_form_label' invisible="language_count &gt; 1">
+                                            Language
+                                        </span>
+                                        <span class='o_form_label' invisible="language_count &lt;= 1">
+                                            Languages
+                                        </span>
+                                    </div>
+                                    <div class="mt8">
+                                        <button name="%(base.action_view_base_language_install)d" icon="east" type="action" string="Add Languages" class="btn-link"/>
+                                    </div>
+                                    <div class="mt8" groups="base.group_no_one">
+                                        <button name="%(base.res_lang_act_window)d" icon="east" type="action" string="Manage Languages" class="btn-link"/>
+                                    </div>
+                                </setting>
+                            </block>
+                        </div>
+
+                        <div id="companies">
+                            <block title="Companies" name="companies_setting_container">
+                                <field name="company_id" invisible="1"/>
+                                <setting id="company_details_settings">
+                                    <field name="company_name" nolabel="1" class="fw-bold"/>
+                                    <br/>
+                                    <field name="company_informations" class="text-muted" style="width: 90%;"/>
+                                    <br/>
+                                    <button name="open_company" icon="east" type="object" string="Update Info" class="btn-link"/>
+                                </setting>
+                                <setting id="companies_setting">
+                                    <field name='company_count' nolabel="1" class="w-auto ps-1 fw-bold"/>
+                                    <span class='o_form_label' invisible="company_count &gt; 1">
+                                        Company
+                                    </span>
+                                    <span class='o_form_label' invisible="company_count &lt;= 1">
+                                        Companies
+                                    </span>
+                                    <br/>
+                                    <div class="mt8">
+                                        <button name="%(base.action_res_company_form)d" icon="east" type="action" string="Manage Companies" class="btn-link"/>
+                                    </div>
+                                </setting>
+                            </block>
+                        </div>
+                        <div id="emails"/>
+
+                        <div id="contacts_settings"/>
+
+                    <block title="Permissions" id="user_default_rights">
+                        <setting string="Default Access Rights" help="Set custom access rights for new users" id="access_rights">
+                            <div class="content-group">
+                                <div class="mt8">
+                                    <button type="object" name="open_new_user_default_groups" string="Default Access Rights" icon="east" class="btn-link"/>
+                                </div>
+                            </div>
+                        </setting>
+                        <setting string="API Keys" help="API Keys allow your users to access Odoo with external tools when multi-factor authentication is enabled." groups="base.group_system">
+                            <button type="action" name="%(base.action_apikeys_admin)d" string="Manage API Keys" icon="east" class="btn-link"/>
+                        </setting>
+                    </block>
+
+                    <block title="Progressive Web App" id="pwa_settings" groups="base.group_no_one">
+                        <setting help="This name will be used for the application when Odoo is installed through the browser.">
+                            <field name="web_app_name" placeholder="Templorium"/>
+                        </setting>
+                    </block>
+
+                        <widget name='res_config_dev_tool'/>
+                    </app>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_general_configuration" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="path">settings</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="context">{'module' : 'general_settings'}</field>
+        </record>
+
+        <menuitem
+            id="menu_config"
+            name="General Settings"
+            parent="base.menu_administration"
+            sequence="0"
+            action="action_general_configuration"
+            groups="base.group_system"/>
+
+</odoo>

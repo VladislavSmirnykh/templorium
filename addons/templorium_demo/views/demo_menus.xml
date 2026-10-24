@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_templorium_demo_root"
+        name="Templorium Demo"
+        sequence="90"/>
+
+    <menuitem id="menu_templorium_demo_showcase"
+        name="Field showcase"
+        parent="menu_templorium_demo_root"
+        action="action_templorium_demo_showcase"
+        sequence="10"/>
+
+    <menuitem id="menu_templorium_demo_config"
+        name="Configuration"
+        parent="menu_templorium_demo_root"
+        sequence="90"/>
+
+    <menuitem id="menu_templorium_demo_tags"
+        name="Tags (Many2many)"
+        parent="menu_templorium_demo_config"
+        action="action_templorium_demo_tag"
+        sequence="10"/>
+
+    <menuitem id="menu_templorium_demo_ref_targets"
+        name="Reference targets"
+        parent="menu_templorium_demo_config"
+        action="action_templorium_demo_ref_target"
+        sequence="20"/>
+
+    <menuitem id="menu_templorium_demo_properties_schema"
+        name="Properties schemas"
+        parent="menu_templorium_demo_config"
+        action="action_templorium_demo_properties_schema"
+        sequence="30"/>
+</odoo>
